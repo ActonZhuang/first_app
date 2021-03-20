@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class GroupsController < ApplicationController
   def index
     @groups = Group.all
@@ -6,6 +7,10 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new
+  end
+
+  def show
+    @group = Group.find(params[:id])
   end
 
   def create
