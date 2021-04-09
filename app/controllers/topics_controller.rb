@@ -4,6 +4,19 @@ class TopicsController < ApplicationController
   # GET /topics or /topics.json
   def index
     @topics = Topic.all
+    get_openid_configuration
+  end
+
+  def get_openid_configuration
+    url = 'https://oauth-login.cloud.huawei.com/.well-known/openid-configuration'
+    response = RestClient.get(url)
+    config_uris = JSON.parse(response.body)
+    jwks_uri = config_uris['jwks_uri']
+    jwt_keys = RestClient.get(jwks_uri)
+    keys = JSON.parse(jwt_keys)
+    keys['keys'].each do |item|
+      puts item['kid']
+    end
   end
 
   # GET /topics/1 or /topics/1.json
